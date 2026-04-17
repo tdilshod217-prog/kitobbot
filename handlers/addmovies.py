@@ -23,8 +23,6 @@ async def get_title(msg:Message, state: FSMContext):
     await state.set_state(AddMovies.file_id)
 
 @router.message(AddMovies.file_id)
-async def get_title(msg:Message, state: FSMContext):
-@router.message(AddMovies.file_id)
 async def get_video(msg: Message, state: FSMContext):
     file_id = None
 
