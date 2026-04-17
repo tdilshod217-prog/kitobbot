@@ -46,7 +46,7 @@ async def get_video(msg: Message, state: FSMContext):
 
     # Agar file_id topilgan bo'lsa, saqlaymiz
     await state.update_data(file_id=file_id)
-    await msg.answer("Video qabul qilindi! Endi kino nomini yuboring:")
+    await msg.answer("Video qabul qilindi! Endi kino kodini yuboring:")
     await state.set_state(AddMovies.code)
 
 @router.message(AddMovies.code)
