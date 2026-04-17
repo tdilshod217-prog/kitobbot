@@ -55,7 +55,7 @@ class Database:
 #search movie
     async def search_movie(self,code:int):
         sql="""
-        select id,file_id,code from movies WHERE code=$1;
+        select id,title,file_id,code from movies WHERE code=$1;
         """
         return await self.pool.fetchrow(sql,code)
     
