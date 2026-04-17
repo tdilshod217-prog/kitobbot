@@ -19,13 +19,36 @@ async def get_title(msg:Message, state: FSMContext):
 @router.message(AddMovies.title)
 async def get_title(msg:Message, state: FSMContext):
     await state.update_data(title=msg.text)
-    await msg.answer("Kino ni jo'nating")
+    await msg.answer("Kinoni jo'nating")
     await state.set_state(AddMovies.file_id)
 
 @router.message(AddMovies.file_id)
 async def get_title(msg:Message, state: FSMContext):
-    await state.update_data(file_id=msg.video.file_id)
-    await msg.answer("Kino code ni jo'nating")
+@router.message(AddMovies.file_id)
+async def get_video(msg: Message, state: FSMContext):
+    file_id = None
+
+    # 1. Agar oddiy video bo'lib kelsa
+    if msg.video:
+        file_id = msg.video.file_id
+    
+    # 2. Agar MP4 fayl (Document) bo'lib kelsa
+    elif msg.document:
+        # Faylning turi video ekanligini tekshiramiz (masalan: video/mp4)
+        if msg.document.mime_type and msg.document.mime_type.startswith('video/'):
+            file_id = msg.document.file_id
+        else:
+            await msg.answer("Bu video fayl emas. Iltimos, MP4 formatidagi video yuboring!")
+            return
+    
+    # 3. Agar umuman boshqa narsa kelsa (rasm, tekst va h.k.)
+    else:
+        await msg.answer("Iltimos, video yuboring!")
+        return
+
+    # Agar file_id topilgan bo'lsa, saqlaymiz
+    await state.update_data(file_id=file_id)
+    await msg.answer("Video qabul qilindi! Endi kino nomini yuboring:")
     await state.set_state(AddMovies.code)
 
 @router.message(AddMovies.code)
