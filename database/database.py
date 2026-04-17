@@ -6,22 +6,22 @@ class Database:
         self.pool = None
 
     async def connect(self):
-    # Ikkala ehtimolni ham tekshirish:
+        # Ikkala ehtimolni ham tekshirish:
         dsn = os.getenv("DB_URL") or os.getenv("DATABASE_URL")
-    
+        
         if dsn:
             print("Ulanish DB_URL orqali amalga oshirilmoqda...")
-        self.pool = await asyncpg.create_pool(dsn=dsn)
+            self.pool = await asyncpg.create_pool(dsn=dsn)
         else:
-        # Agar DB_URL yo'q bo'lsa, Railway xostini configdan tekshiring
+            # Agar DB_URL yo'q bo'lsa, Railway xostini configdan tekshiring
             print(f"DEBUG: Hostga ulanish: {config.DB_HOST}")
-        self.pool = await asyncpg.create_pool(
-            user=config.DB_USER,
-            password=config.DB_PASSWORD,
-            database=config.DB_NAME,
-            host=config.DB_HOST,
-            port=config.DB_PORT
-        )
+            self.pool = await asyncpg.create_pool(
+                user=config.DB_USER,
+                password=config.DB_PASSWORD,
+                database=config.DB_NAME,
+                host=config.DB_HOST,
+                port=config.DB_PORT
+            )
 
     async def add_user(self, telegram_id, username):
         query = """
